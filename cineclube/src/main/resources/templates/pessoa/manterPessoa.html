@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="head :: head"></head>
+
+<body>
+  <!-- 
+    BARRA DE NAVEGACAO 
+  -->
+  <div th:replace="menu :: menu"></div>
+  <!-- 
+    CONTEUDO DA PAGINA 
+  -->
+  <main class="container">
+    <div class="bg-light p-5 rounded">
+      <h3>Gerenciar pessoas</h3>      
+      
+      <div th:switch="${pessoa.id>0}">
+      	<p th:case="${true}">Atualização</p>
+      	<p th:case="*">Cadastro pessoa</p>
+      </div>
+
+      <form th:object="${pessoa}" th:action="@{/pessoas/save/}" method="POST">
+        <input type="hidden" th:field="${pessoa.id}" th:if="${pessoa.id}" />
+        
+        
+        <h4>Dados:</h4>
+        <div class="row">
+        	<div class="col">
+        		<div class="row">
+        			<div class="col">
+        				<label class="form-label" for="nome">Nome</label> 
+				          <input type="text" th:field="${pessoa.nome}" class="form-control" id="nome" placeholder="Nome" 
+				          autocomplete="off">
+				          <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">campo invalido</span>
+        			</div>
+        			<div class="col">
+        				<label class="form-label" for="Biografia">Biografia</label> 
+        				<span class="moviedb" th:text="${pessoa.pessoaTMDB?.biography}?:'biography not found'" />
+        			</div>
+        		</div>
+        	</div>
+        </div>
+        
+        <div class="mb-3">
+        
+          <p th:switch="${pessoa.id>0}">
+            <button th:case="${true}" type="submit" class="btn btn-dark">Update</button>
+            <button th:case="*" type="submit" class="btn btn-primary">Save</button>
+          </p>
+          
+        </div>
+      </form>
+    </div>
+  </main>
+  <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
